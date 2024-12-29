@@ -42,7 +42,7 @@ Installation :
 
 1. Clone the repository or download the script file:
 
-git clone https://github.com/yourusername/password-strength-checker.git
+git clone https://github.com/UNKNOWNKIDE/password-strength-checker.git
 cd password-strength-checker
 
 2. Ensure Python 3.6+ is installed on your system:
