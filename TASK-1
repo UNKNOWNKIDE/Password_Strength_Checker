@@ -1,0 +1,34 @@
+      /**PASSWORD STRENGTH CHECKER **/
+
+import re
+
+def assess_password_strength(password):
+    feedback = []
+
+    if len(password) >= 12:
+        feedback.append("\U0001F44D Good length.")
+    elif len(password) >= 8:
+        feedback.append("\U0001F44C Acceptable length but could be longer.")
+    else:
+        return "\U0001F6AB Weak password: Too short, use at least 8 characters."
+
+    if not re.search(r'[A-Z]', password):
+        feedback.append("\U000026A0 Add an uppercase letter.")
+    if not re.search(r'[a-z]', password):
+        feedback.append("\U000026A0 Add a lowercase letter.")
+    if not re.search(r'[0-9]', password):
+        feedback.append("\U000026A0 Add a digit.")
+    if not re.search(r'[!@#$%^&*(),.?":{}|<>]', password):
+        feedback.append("\U000026A0 Add a special character.")
+
+    if len(set(password)) / len(password) <= 0.7:
+        feedback.append("\U0001F50D Increase character diversity.")
+
+    if not feedback:
+        return "\U0001F525 Strong password! Great job!"
+    else:
+        return "\U0001F914 Moderate password: " + " ".join(feedback)
+
+if __name__ == "__main__":
+    password = input("Enter a password to check its strength: ")
+    print(assess_password_strength(password))
