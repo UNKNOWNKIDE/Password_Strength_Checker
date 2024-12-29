@@ -69,7 +69,7 @@ Example output for a moderate password:
 
 🤔 Moderate password: 👍 Good length. ⚠ Add a special character. 🔍 Increase character diversity.
 
-Contributing
+Contributing :
 
 We welcome contributions to improve the Password Strength Checker! Here’s how you can contribute:
 
