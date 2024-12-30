@@ -42,19 +42,19 @@ Overview: The Password Strength Checker is a Python-based tool designed to evalu
 
 1. Clone the repository or download the script file:
 
-```
+```bash
 git clone https://github.com/UNKNOWNKIDE/CODTECH-task1-checker.git
 cd password-strength-checker
 ```
 2. Ensure Python 3.6+ is installed on your system:
 
-```
+```bash
 python --version
 ```
 ### Usage :
 
 1. Run the script in your terminal:
-```
+```bash
 python password_checker.py
 ```
 2. Enter a password when prompted:
@@ -79,11 +79,11 @@ We welcome contributions to improve the Password Strength Checker! Here’s how 
 1. Fork the repository.
 
 2. Create a new branch for your feature or bug fix:
-```
+```bash
      git checkout -b feature-name
 ```
 3. Commit your changes:
-```
+```bash
      git commit -m "Add feature-name"
 ```
 4. Push the changes to your fork and submit a pull request.
