@@ -79,17 +79,17 @@ We welcome contributions to improve the Password Strength Checker! Here’s how 
 1. Fork the repository.
 
 2. Create a new branch for your feature or bug fix:
-
+```
      git checkout -b feature-name
-
+```
 3. Commit your changes:
-
+```
      git commit -m "Add feature-name"
-
+```
 4. Push the changes to your fork and submit a pull request.
 
 ### Acknowledgements :
 
---> Python Community: For the robust standard libraries that make tools like this possible.
+- >Python Community: For the robust standard libraries that make tools like this possible.
 
---> Inspiration: Security best practices from organizations like NIST and OWASP.
+- >Inspiration: Security best practices from organizations like NIST and OWASP.
