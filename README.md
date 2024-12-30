@@ -1,6 +1,6 @@
 CODETECK-task1
 
-Redme
+
 Password Strength Checker
 
 Overview: The Password Strength Checker is a Python-based tool designed to evaluate the strength of user-provided passwords. It analyzes various aspects of the password, such as length, character variety, and diversity, providing actionable feedback to improve password security. This tool is useful for individuals or developers looking to ensure secure password practices.
