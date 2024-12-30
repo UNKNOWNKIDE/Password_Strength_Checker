@@ -62,10 +62,11 @@ Enter a password to check its strength: <YourPassword>
 3. Review the feedback provided by the script:
 
 Example output for a strong password:
-![output](pass.png)
+
 🔥 Strong password! Great job!
 
 Example output for a moderate password:
+![output](pass.png)
 
 🤔 Moderate password: 👍 Good length. ⚠ Add a special character. 🔍 Increase character diversity.
 
