@@ -1,8 +1,7 @@
-      /* PASSWORD STRENGTH CHECKER */
-
 import re
-import tkinter as tk
-from tkinter import messagebox
+from flask import Flask, render_template_string, request, jsonify
+
+app = Flask(__name__)
 
 def password_strength_checker(password):
     score = 0
@@ -41,9 +40,9 @@ def password_strength_checker(password):
         feedback.append("Include at least one special character (e.g., @, #, $).")
 
     # Check for repeated characters or common patterns
-    if len(set(password)) / len(password) < 0.5:
+    if len(password) > 0 and len(set(password)) / len(password) < 0.5:
         feedback.append("Avoid repeated characters or predictable patterns.")
-    
+
     # Check for common words or patterns like 'password', '12345', etc.
     if re.search(r'(password|12345|qwerty|admin)', password, re.IGNORECASE):
         feedback.append("Avoid using common words or patterns like 'password' or '12345'.")
@@ -56,54 +55,83 @@ def password_strength_checker(password):
     else:
         strength = "Weak"
         feedback.append("Consider combining suggestions above for a stronger password.")
-    
+
     return {
         "strength": strength,
         "score": score,
         "feedback": feedback
     }
 
-# GUI function using Tkinter
-def show_password_strength():
-    password = entry_password.get()
-    result = password_strength_checker(password)
+HTML = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Password Strength Checker</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 0; }
+        .container { max-width: 400px; margin: 60px auto; background: #fff; padding: 30px 40px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);}
+        h2 { text-align: center; color: #333; }
+        label { font-weight: bold; }
+        input[type="password"] { width: 100%; padding: 10px; margin: 10px 0 20px 0; border: 1px solid #ccc; border-radius: 4px; }
+        button { width: 100%; padding: 10px; background: #0078d7; color: #fff; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; }
+        button:hover { background: #005fa3; }
+        .result { margin-top: 20px; }
+        .strength { font-weight: bold; }
+        .score { color: #555; }
+        ul { margin-top: 10px; padding-left: 20px; }
+        li { color: #b00; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Password Strength Checker</h2>
+        <form id="passwordForm">
+            <label for="password">Enter your password:</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit">Check Strength</button>
+        </form>
+        <div class="result" id="result" style="display:none;">
+            <div class="strength" id="strength"></div>
+            <div class="score" id="score"></div>
+            <ul id="feedback"></ul>
+        </div>
+    </div>
+    <script>
+        document.getElementById('passwordForm').onsubmit = async function(e) {
+            e.preventDefault();
+            const password = document.getElementById('password').value;
+            const res = await fetch('/check', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({password})
+            });
+            const data = await res.json();
+            document.getElementById('result').style.display = 'block';
+            document.getElementById('strength').textContent = "Password Strength: " + data.strength;
+            document.getElementById('score').textContent = "Score: " + data.score + "/6";
+            const feedback = document.getElementById('feedback');
+            feedback.innerHTML = "";
+            data.feedback.forEach(function(msg) {
+                const li = document.createElement('li');
+                li.textContent = msg;
+                feedback.appendChild(li);
+            });
+        }
+    </script>
+</body>
+</html>
+"""
 
-    strength_label.config(text=f"Password Strength: {result['strength']}")
-    score_label.config(text=f"Score: {result['score']}/7")
+@app.route("/", methods=["GET"])
+def index():
+    return render_template_string(HTML)
 
-    # Clear the previous feedback
-    feedback_listbox.delete(0, tk.END)
+@app.route("/check", methods=["POST"])
+def check():
+    password = request.json.get("password", "")
+    result = password_strength_checker(password.strip())
+    return jsonify(result)
 
-    if result['feedback']:
-        for suggestion in result['feedback']:
-            feedback_listbox.insert(tk.END, suggestion)
-
-# Set up the main window
-root = tk.Tk()
-root.title("Password Strength Checker")
-root.geometry("500x500")  # Set window size to 500x500 pixels
-
-# Create the input label and entry field
-label_password = tk.Label(root, text="Enter your password:")
-label_password.pack(pady=10)
-
-entry_password = tk.Entry(root, show="*", width=30)
-entry_password.pack(pady=10)
-
-# Create a button to check password strength
-check_button = tk.Button(root, text="Check Strength", command=show_password_strength)
-check_button.pack(pady=20)
-
-# Labels for displaying the strength and score
-strength_label = tk.Label(root, text="Password Strength: Not Checked")
-strength_label.pack(pady=5)
-
-score_label = tk.Label(root, text="Score: Not Checked")
-score_label.pack(pady=5)
-
-# Listbox to display feedback suggestions
-feedback_listbox = tk.Listbox(root, width=50, height=6)
-feedback_listbox.pack(pady=10)
-
-# Start the GUI loop
-root.mainloop()
+if __name__ == "__main__":
+    app.run(debug=True)
